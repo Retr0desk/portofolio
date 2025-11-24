@@ -27,7 +27,6 @@ class FancyHero extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
           child: Glass(
-            isScrolling: isScrolling, // <-- adaptive effect applied here
             blur: 30,
             opacity: 0.14,
             padding: EdgeInsets.symmetric(
@@ -49,7 +48,7 @@ class FancyHero extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'AI Engineer • Secure Systems Developer • Flutter App Integrator',
+                  'AI Engineer • Secure Systems Developer',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
@@ -96,7 +95,6 @@ class HeroAction extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Glass(
-          isScrolling: isScrolling, // <-- optional adaptive effect
           blur: 12,
           opacity: 0.06,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

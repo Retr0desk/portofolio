@@ -33,7 +33,6 @@ class FancyNavBar extends StatelessWidget {
 
     return Center(
       child: Glass(
-        isScrolling: isScrolling, // <-- Pass scrolling state
         blur: 16,
         opacity: 0.10,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
