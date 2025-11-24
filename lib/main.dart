@@ -10,8 +10,10 @@ import 'package:portofolio/components/navbar.dart';
 import 'package:portofolio/components/projects.dart';
 import 'package:portofolio/components/skills.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void main() {
+  setUrlStrategy(PathUrlStrategy());
   runApp(const PortfolioApp());
 }
 
@@ -84,90 +86,81 @@ class _PortfolioHomeState extends State<PortfolioHome> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (scroll) {
-        setState(() => offsetY = scroll.metrics.pixels);
-        return true;
-      },
-      child: Scaffold(
-        body: Stack(
-          children: [
-            // Background glow
-            Positioned.fill(
-              child: Image.asset(
-                'assets/bg_glow_purple.png',
-                fit: BoxFit.cover,
-                color: Colors.black.withOpacity(0.4),
-                colorBlendMode: BlendMode.darken,
-              ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Background glow
+          Positioned.fill(
+            child: Image.asset(
+              'assets/bg_glow_purple.png',
+              fit: BoxFit.cover,
+              color: Colors.black.withOpacity(0.4),
+              colorBlendMode: BlendMode.darken,
             ),
+          ),
 
-            // MAIN CONTENT
-            SingleChildScrollView(
-              controller: smoothScroll,
-              child: Column(
-                children: [
-                  const SizedBox(height: 40),
+          // MAIN CONTENT
+          SingleChildScrollView(
+            controller: smoothScroll,
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
 
-                  FancyNavBar(
-                    onAbout: () => scrollToKey(aboutKey),
-                    onSkills: () => scrollToKey(skillsKey),
-                    onProjects: () => scrollToKey(projectsKey),
-                    onCertficates: () => scrollToKey(certificatesKey),
-                    onContact: () => scrollToKey(contactKey),
+                FancyNavBar(
+                  onAbout: () => scrollToKey(aboutKey),
+                  onSkills: () => scrollToKey(skillsKey),
+                  onProjects: () => scrollToKey(projectsKey),
+                  onCertficates: () => scrollToKey(certificatesKey),
+                  onContact: () => scrollToKey(contactKey),
+                ),
+
+                const SizedBox(height: 34),
+                const FancyHero(),
+                const SizedBox(height: 100),
+
+                AnimatedSection(
+                  child: Container(key: aboutKey, child: const AboutSection()),
+                ),
+                const SizedBox(height: 80),
+
+                AnimatedSection(
+                  child: Container(
+                    key: skillsKey,
+                    child: const SkillsSection(),
                   ),
+                ),
+                const SizedBox(height: 80),
 
-                  const SizedBox(height: 34),
-                  const FancyHero(),
-                  const SizedBox(height: 100),
-
-                  AnimatedSection(
-                    child: Container(
-                      key: aboutKey,
-                      child: const AboutSection(),
-                    ),
+                AnimatedSection(
+                  child: Container(
+                    key: projectsKey,
+                    child: const ProjectsSection(),
                   ),
-                  const SizedBox(height: 80),
+                ),
+                const SizedBox(height: 80),
 
-                  AnimatedSection(
-                    child: Container(
-                      key: skillsKey,
-                      child: const SkillsSection(),
-                    ),
+                AnimatedSection(
+                  child: Container(
+                    key: certificatesKey,
+                    child: const CertificatesSection(),
                   ),
-                  const SizedBox(height: 80),
+                ),
+                const SizedBox(height: 80),
 
-                  AnimatedSection(
-                    child: Container(
-                      key: projectsKey,
-                      child: const ProjectsSection(),
-                    ),
+                AnimatedSection(
+                  child: Container(
+                    key: contactKey,
+                    child: const ContactSection(),
                   ),
-                  const SizedBox(height: 80),
+                ),
+                const SizedBox(height: 60),
 
-                  AnimatedSection(
-                    child: Container(
-                      key: certificatesKey,
-                      child: const CertificatesSection(),
-                    ),
-                  ),
-                  const SizedBox(height: 80),
-
-                  AnimatedSection(
-                    child: Container(
-                      key: contactKey,
-                      child: const ContactSection(),
-                    ),
-                  ),
-                  const SizedBox(height: 60),
-
-                  const Footer(),
-                  const SizedBox(height: 40),
-                ],
-              ),
+                const Footer(),
+                const SizedBox(height: 40),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
