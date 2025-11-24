@@ -49,9 +49,6 @@ class CertificatesSection extends StatelessWidget {
   }
 }
 
-// ============================================================================
-// Certificate Card (Hover Effect + Buttons)
-// ============================================================================
 class CertificateCard extends StatefulWidget {
   final String title;
   final String desc;

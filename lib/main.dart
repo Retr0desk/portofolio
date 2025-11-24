@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portofolio/components/AnimationSection.dart';
@@ -9,6 +10,7 @@ import 'package:portofolio/components/hero.dart';
 import 'package:portofolio/components/navbar.dart';
 import 'package:portofolio/components/projects.dart';
 import 'package:portofolio/components/skills.dart';
+import 'package:portofolio/components/glass.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -56,17 +58,35 @@ class PortfolioHome extends StatefulWidget {
 }
 
 class _PortfolioHomeState extends State<PortfolioHome> {
-  double offsetY = 0;
+  final ScrollController smoothScroll = ScrollController();
+  Timer? _scrollTimer;
+  bool isScrolling = false;
 
-  // === Scroll-To-Section Keys ===
+  // Section keys
   final aboutKey = GlobalKey();
   final skillsKey = GlobalKey();
   final projectsKey = GlobalKey();
   final certificatesKey = GlobalKey();
   final contactKey = GlobalKey();
 
-  // === SMOOTH SCROLL PREMIUM ===
-  final ScrollController smoothScroll = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    smoothScroll.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!isScrolling) {
+      setState(() => isScrolling = true);
+    }
+
+    _scrollTimer?.cancel();
+    _scrollTimer = Timer(const Duration(milliseconds: 200), () {
+      if (mounted) {
+        setState(() => isScrolling = false);
+      }
+    });
+  }
 
   Future<void> scrollToKey(GlobalKey key) async {
     final context = key.currentContext;
@@ -86,87 +106,80 @@ class _PortfolioHomeState extends State<PortfolioHome> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (_) => false,
-      child: Scaffold(
-        body: Stack(
-          children: [
-            // Background glow
-            Positioned.fill(
-              child: Image.asset(
-                'assets/bg_glow_purple.png',
-                fit: BoxFit.cover,
-                color: Colors.black.withOpacity(0.4),
-                colorBlendMode: BlendMode.darken,
-              ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/bg_glow_purple.png',
+              fit: BoxFit.cover,
+              color: Colors.black.withOpacity(0.4),
+              colorBlendMode: BlendMode.darken,
             ),
+          ),
 
-            // MAIN CONTENT
-            SingleChildScrollView(
-              controller: smoothScroll,
-              child: Column(
-                children: [
-                  const SizedBox(height: 40),
+          SingleChildScrollView(
+            controller: smoothScroll,
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
 
-                  FancyNavBar(
-                    onAbout: () => scrollToKey(aboutKey),
-                    onSkills: () => scrollToKey(skillsKey),
-                    onProjects: () => scrollToKey(projectsKey),
-                    onCertficates: () => scrollToKey(certificatesKey),
-                    onContact: () => scrollToKey(contactKey),
+                FancyNavBar(
+                  isScrolling: isScrolling,
+                  onAbout: () => scrollToKey(aboutKey),
+                  onSkills: () => scrollToKey(skillsKey),
+                  onProjects: () => scrollToKey(projectsKey),
+                  onCertficates: () => scrollToKey(certificatesKey),
+                  onContact: () => scrollToKey(contactKey),
+                ),
+
+                const SizedBox(height: 34),
+                FancyHero(isScrolling: isScrolling),
+                const SizedBox(height: 100),
+
+                AnimatedSection(
+                  child: Container(key: aboutKey, child: const AboutSection()),
+                ),
+                const SizedBox(height: 80),
+
+                AnimatedSection(
+                  child: Container(
+                    key: skillsKey,
+                    child: const SkillsSection(),
                   ),
+                ),
+                const SizedBox(height: 80),
 
-                  const SizedBox(height: 34),
-                  const FancyHero(),
-                  const SizedBox(height: 100),
-
-                  AnimatedSection(
-                    child: Container(
-                      key: aboutKey,
-                      child: const AboutSection(),
-                    ),
+                AnimatedSection(
+                  child: Container(
+                    key: projectsKey,
+                    child: const ProjectsSection(),
                   ),
-                  const SizedBox(height: 80),
+                ),
+                const SizedBox(height: 80),
 
-                  AnimatedSection(
-                    child: Container(
-                      key: skillsKey,
-                      child: const SkillsSection(),
-                    ),
+                AnimatedSection(
+                  child: Container(
+                    key: certificatesKey,
+                    child: const CertificatesSection(),
                   ),
-                  const SizedBox(height: 80),
+                ),
+                const SizedBox(height: 80),
 
-                  AnimatedSection(
-                    child: Container(
-                      key: projectsKey,
-                      child: const ProjectsSection(),
-                    ),
+                AnimatedSection(
+                  child: Container(
+                    key: contactKey,
+                    child: const ContactSection(),
                   ),
-                  const SizedBox(height: 80),
+                ),
+                const SizedBox(height: 60),
 
-                  AnimatedSection(
-                    child: Container(
-                      key: certificatesKey,
-                      child: const CertificatesSection(),
-                    ),
-                  ),
-                  const SizedBox(height: 80),
-
-                  AnimatedSection(
-                    child: Container(
-                      key: contactKey,
-                      child: const ContactSection(),
-                    ),
-                  ),
-                  const SizedBox(height: 60),
-
-                  const Footer(),
-                  const SizedBox(height: 40),
-                ],
-              ),
+                const Footer(),
+                const SizedBox(height: 40),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

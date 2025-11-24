@@ -7,6 +7,7 @@ class FancyNavBar extends StatelessWidget {
   final VoidCallback? onProjects;
   final VoidCallback? onCertficates;
   final VoidCallback? onContact;
+  final bool isScrolling; // <-- NEW
 
   const FancyNavBar({
     super.key,
@@ -15,6 +16,7 @@ class FancyNavBar extends StatelessWidget {
     this.onProjects,
     this.onCertficates,
     this.onContact,
+    this.isScrolling = false, // default
   });
 
   @override
@@ -31,9 +33,11 @@ class FancyNavBar extends StatelessWidget {
 
     return Center(
       child: Glass(
+        isScrolling: isScrolling, // <-- Pass scrolling state
         blur: 16,
         opacity: 0.10,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+
         child: isMobile
             ? Wrap(
                 spacing: 14,

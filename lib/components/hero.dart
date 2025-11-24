@@ -6,12 +6,14 @@ class FancyHero extends StatelessWidget {
   final VoidCallback? onDownloadCV;
   final VoidCallback? onViewProjects;
   final VoidCallback? onContact;
+  final bool isScrolling; // <-- NEW
 
   const FancyHero({
     super.key,
     this.onDownloadCV,
     this.onViewProjects,
     this.onContact,
+    this.isScrolling = false, // <-- default
   });
 
   @override
@@ -25,6 +27,7 @@ class FancyHero extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
           child: Glass(
+            isScrolling: isScrolling, // <-- adaptive effect applied here
             blur: 30,
             opacity: 0.14,
             padding: EdgeInsets.symmetric(
@@ -51,9 +54,12 @@ class FancyHero extends StatelessWidget {
                   style: TextStyle(color: Colors.white70, fontSize: 16),
                 ),
                 const SizedBox(height: 20),
+
+                // --- Button ---
                 HeroAction(
                   label: 'Download CV',
                   icon: Icons.download,
+                  isScrolling: isScrolling, // <-- pass state
                   onTap: () => launchUrl(
                     Uri.parse(
                       'https://drive.google.com/file/d/1n0dIlJByrA07euQcZapXT6Z-3gzGIyDB/view?usp=sharing',
@@ -73,12 +79,14 @@ class HeroAction extends StatelessWidget {
   final String label;
   final IconData icon;
   final VoidCallback? onTap;
+  final bool isScrolling; // <-- NEW
 
   const HeroAction({
     super.key,
     required this.label,
     required this.icon,
     this.onTap,
+    this.isScrolling = false,
   });
 
   @override
@@ -88,6 +96,7 @@ class HeroAction extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Glass(
+          isScrolling: isScrolling, // <-- optional adaptive effect
           blur: 12,
           opacity: 0.06,
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

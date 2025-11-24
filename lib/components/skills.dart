@@ -46,9 +46,6 @@ class SkillsSection extends StatelessWidget {
   }
 }
 
-// ============================================================================
-// Skill Chip
-// ============================================================================
 class SkillChip extends StatelessWidget {
   final String label;
   const SkillChip(this.label, {super.key});

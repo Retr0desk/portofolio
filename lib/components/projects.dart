@@ -53,9 +53,6 @@ class ProjectsSection extends StatelessWidget {
   }
 }
 
-// ============================================================================
-// Project Card (Hover Effect + Buttons)
-// ============================================================================
 class ProjectCard extends StatefulWidget {
   final String title;
   final String desc;
