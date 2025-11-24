@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/components/AnimationSection.dart';
-import 'package:portfolio/components/about.dart';
-import 'package:portfolio/components/certificate.dart';
-import 'package:portfolio/components/contact.dart';
-import 'package:portfolio/components/footer.dart';
-import 'package:portfolio/components/hero.dart';
-import 'package:portfolio/components/navbar.dart';
-import 'package:portfolio/components/projects.dart';
-import 'package:portfolio/components/skills.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:portofolio/components/AnimationSection.dart';
+import 'package:portofolio/components/about.dart';
+import 'package:portofolio/components/certificate.dart';
+import 'package:portofolio/components/contact.dart';
+import 'package:portofolio/components/footer.dart';
+import 'package:portofolio/components/hero.dart';
+import 'package:portofolio/components/navbar.dart';
+import 'package:portofolio/components/projects.dart';
+import 'package:portofolio/components/skills.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
   runApp(const PortfolioApp());
@@ -21,10 +23,24 @@ class PortfolioApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Portfolio Wahyu Ajitomo',
-      theme: ThemeData.dark().copyWith(
+
+      theme: ThemeData(
+        brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF050507),
-        textTheme: ThemeData.dark().textTheme,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          ThemeData.dark().textTheme,
+        ).apply(bodyColor: Colors.white, displayColor: Colors.white),
       ),
+
+      builder: (context, child) => ResponsiveBreakpoints.builder(
+        child: child!,
+        breakpoints: [
+          Breakpoint(start: 0, end: 450, name: MOBILE),
+          Breakpoint(start: 451, end: 800, name: TABLET),
+          Breakpoint(start: 801, end: 1920, name: DESKTOP),
+        ],
+      ),
+
       home: const PortfolioHome(),
     );
   }

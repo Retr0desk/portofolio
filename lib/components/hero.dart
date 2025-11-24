@@ -20,57 +20,49 @@ class FancyHero extends StatelessWidget {
     final isMobile = width < 700;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-      child: Glass(
-        blur: 30,
-        opacity: 0.14,
-        padding: EdgeInsets.symmetric(
-          vertical: isMobile ? 36 : 64,
-          horizontal: isMobile ? 24 : 88,
-        ),
-        child: Column(
-          children: [
-            const CircleAvatar(
-              radius: 72,
-              backgroundImage: AssetImage('assets/profile.jpg'),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 900),
+          child: Glass(
+            blur: 30,
+            opacity: 0.14,
+            padding: EdgeInsets.symmetric(
+              vertical: isMobile ? 36 : 64,
+              horizontal: isMobile ? 16 : 48,
             ),
-
-            const SizedBox(height: 22),
-
-            const Text(
-              'Wahyu Ajitomo',
-              style: TextStyle(fontSize: 44, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 8),
-
-            const Text(
-              'AI Engineer • Secure Systems Developer • Flutter App Integrator',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white70, fontSize: 18),
-            ),
-
-            const SizedBox(height: 18),
-
-            Wrap(
-              spacing: 12,
-              runSpacing: 8,
-              alignment: WrapAlignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                const CircleAvatar(
+                  radius: 72,
+                  backgroundImage: AssetImage('assets/profile.jpg'),
+                ),
+                const SizedBox(height: 22),
+                const Text(
+                  'Wahyu Ajitomo',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'AI Engineer • Secure Systems Developer • Flutter App Integrator',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white70, fontSize: 16),
+                ),
+                const SizedBox(height: 20),
                 HeroAction(
                   label: 'Download CV',
                   icon: Icons.download,
-                  onTap: () {
-                    launchUrl(
-                      Uri.parse(
-                        'https://drive.google.com/file/d/1n0dIlJByrA07euQcZapXT6Z-3gzGIyDB/view?usp=sharing',
-                      ),
-                    );
-                  },
+                  onTap: () => launchUrl(
+                    Uri.parse(
+                      'https://drive.google.com/file/d/1n0dIlJByrA07euQcZapXT6Z-3gzGIyDB/view?usp=sharing',
+                    ),
+                  ),
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
