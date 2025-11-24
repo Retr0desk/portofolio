@@ -116,12 +116,10 @@ class _ProjectCardState extends State<ProjectCard> {
                       backgroundColor: Colors.white10,
                     ),
                     icon: const Icon(Icons.code, size: 16),
-                    label: const Text('Source'),
+                    label: const Text('Demo'),
                   ),
 
                   const SizedBox(width: 12),
-
-                  OutlinedButton(onPressed: () {}, child: const Text('Demo')),
                 ],
               ),
             ],
