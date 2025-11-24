@@ -52,7 +52,7 @@ class FancyHero extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 HeroAction(
-                  label: 'Download CV',
+                  label: 'Download C',
                   icon: Icons.download,
                   onTap: () => launchUrl(
                     Uri.parse(
