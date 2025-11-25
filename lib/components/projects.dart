@@ -32,7 +32,7 @@ class ProjectsSection extends StatelessWidget {
                 title: 'AI X-Ray Classifier',
                 desc:
                     'Model CNN multiclass dengan Grad-CAM interpretability dan evaluasi lengkap.',
-                link: 'https://evangelionsfelix8.github.io/medintel/',
+                link: 'http://felyxionspace.github.io/med_intel',
               ),
               ProjectCard(
                 title: 'Hybrid Encryption System',
