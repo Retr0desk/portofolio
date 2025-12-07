@@ -23,7 +23,7 @@ class AboutSection extends StatelessWidget {
             const SizedBox(height: 20),
 
             const Text(
-              'Halo, saya Aji. Saya berfokus dibidang data science, deep learning, dan pengembangan backend. Saya telah mengerjakan beberapa proyek, termasuk model CNN dengan interpretabilitas Grad-CAM, sistem enkripsi hybrid (AES-256, IPFS, dan smart contract), serta beberapa aplikasi layanan backend.'
+              'Halo, saya Aji. Saya berfokus dibidang data science, deep learning, dan pengembangan backend. Saya telah mengerjakan beberapa proyek, termasuk model CNN dengan interpretabilitas Grad-CAM, sistem enkripsi hybrid (AES-256, IPFS, dan smart contract), serta beberapa aplikasi layanan backend. '
               'Saya senang membangun solusi yang terstruktur, scalable, dan bisa dikembangkan lebih lanjut sesuai kebutuhan. Jika Anda tertarik berdiskusi atau berkolaborasi, silakan hubungi saya.',
               textAlign: TextAlign.justify,
               style: TextStyle(
