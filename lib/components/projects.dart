@@ -36,9 +36,20 @@ class ProjectsSection extends StatelessWidget {
               ),
               ProjectCard(
                 title: 'Hybrid Encryption System',
-                desc:
-                    'AES-256 + IPFS + Smart Contract Ethereum untuk penyimpanan metadata.',
+                desc: 'AES-256 + IPFS + penyimpanan metadata.',
                 link: '',
+              ),
+              ProjectCard(
+                title: 'Agent-AI-Neural-Grid',
+                desc:
+                    'Kerangka kerja AI Agent berbasis LangGraph (State Graph) untuk mengorganisir siklus kognitif model AI secara otonom.',
+                link: 'https://github.com/Retr0desk/Agent-AI-Neural-Grid',
+              ),
+              ProjectCard(
+                title: 'RAG Research Assistant',
+                desc:
+                    'Sistem RAG berbasis LangChain, ChromaDB, dan Zephyr-7B LLM untuk pencarian semantik serta Q&A dokumen lokal.',
+                link: 'https://github.com/Retr0desk/RAG-Research-Assistant',
               ),
               // ProjectCard(
               //   title: 'Flutter Mobile App',
