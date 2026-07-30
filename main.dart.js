@@ -63622,7 +63622,7 @@ A.BK.prototype={
 P(a){var s=null,r=A.bN(a,s,t.w).w.a.a<700,q=r?36:64,p=r?16:48
 return new A.eP(B.kk,A.aas(new A.jc(B.wN,A.hk(30,A.i5(A.d([B.y9,B.IF,B.Na,B.II,B.N7,B.iw,new A.Cb("Download CV",B.Ad,new A.Rg(),s)],t.p),B.bc,B.c6),0.14,new A.bf(p,q,p,q)),s),s,s),s)}}
 A.Rg.prototype={
-$0(){return A.zp(A.eV("https://drive.google.com/file/d/1n0dIlJByrA07euQcZapXT6Z-3gzGIyDB/view?usp=sharing",0,null))},
+$0(){return A.zp(A.eV("https://drive.google.com/file/d/1lMWtHGZogna9j2y5ZwuBDorS7LZcr830/view?usp=drive_link",0,null))},
 $S:0}
 A.Cb.prototype={
 P(a){var s=null
