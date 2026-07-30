@@ -60342,7 +60342,7 @@ A.AD.prototype={
 R(a){var s=null,r=A.c1(a,s,t.w).w.a.a<700,q=r?36:64,p=r?16:48
 return new A.eA(B.jY,A.a8j(new A.j5(B.wf,A.h7(30,A.hV(A.c([B.xB,B.HD,B.M7,B.HG,B.M6,B.i5,new A.B6("Download CV",B.zD,new A.PE(),s)],t.p),B.b5,B.bT),0.14,new A.b9(p,q,p,q)),s),s,s),s)}}
 A.PE.prototype={
-$0(){return A.ym(A.eG("https://drive.google.com/file/d/1n0dIlJByrA07euQcZapXT6Z-3gzGIyDB/view?usp=sharing",0,null))},
+$0(){return A.ym(A.eG("https://drive.google.com/file/d/1lMWtHGZogna9j2y5ZwuBDorS7LZcr830/view?usp=drive_link",0,null))},
 $S:0}
 A.B6.prototype={
 R(a){var s=null
