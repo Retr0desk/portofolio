@@ -61,7 +61,7 @@ class FancyHero extends StatelessWidget {
                   isScrolling: isScrolling, // <-- pass state
                   onTap: () => launchUrl(
                     Uri.parse(
-                      'https://drive.google.com/file/d/1n0dIlJByrA07euQcZapXT6Z-3gzGIyDB/view?usp=sharing',
+                      'https://drive.google.com/file/d/1lMWtHGZogna9j2y5ZwuBDorS7LZcr830/view?usp=drive_link',
                     ),
                   ),
                 ),
