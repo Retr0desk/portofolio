@@ -1,89 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'glass.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_radius.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
+import '../widgets/editorial/editorial_button.dart';
+import '../widgets/editorial/section_header.dart';
+import '../widgets/motion/reveal_on_scroll.dart';
 
+/// Bagian Kontak dengan CTA email utama dan tautan kanal profesional.
 class ContactSection extends StatelessWidget {
-  const ContactSection({super.key});
+  final ScrollController scrollController;
+
+  const ContactSection({super.key, required this.scrollController});
 
   Future<void> _openEmail() async {
-    final Uri emailLaunchUri = Uri(
+    final uri = Uri(
       scheme: 'mailto',
       path: 'w.ajitomo@gmail.com',
       query: 'subject=Portfolio%20Inquiry',
     );
-    if (await canLaunchUrl(emailLaunchUri)) {
-      await launchUrl(emailLaunchUri);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     }
   }
 
   Future<void> _launchLink(String url) async {
     final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) await launchUrl(uri);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Glass(
-        padding: const EdgeInsets.all(26),
-        blur: 22,
-        opacity: 0.12,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Kontak',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 16),
-
-            const Text(
-              'Silakan hubungi saya melalui email atau media sosial di bawah.',
-              style: TextStyle(color: Colors.white70),
-            ),
-
-            const SizedBox(height: 18),
-
-            Wrap(
-              spacing: 14,
-              runSpacing: 14,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: _openEmail,
-                  icon: const Icon(Icons.mail),
-                  label: const Text('Email'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white10,
-                  ),
-                ),
-
-                OutlinedButton.icon(
-                  onPressed: () => _launchLink('https://github.com/retr0desk'),
-                  icon: const Icon(Icons.code),
-                  label: const Text('GitHub'),
-                ),
-
-                OutlinedButton.icon(
-                  onPressed: () => _launchLink(
-                    'https://www.linkedin.com/in/wahyu-ajitomo-03b368137',
-                  ),
-                  icon: const Icon(Icons.person),
-                  label: const Text('LinkedIn'),
-                ),
-
-                OutlinedButton.icon(
-                  onPressed: () =>
-                      _launchLink('https://instagram.com/_whyuaji'),
-                  icon: const Icon(Icons.camera_alt),
-                  label: const Text('Instagram'),
-                ),
-              ],
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionHeader(
+          index: '05',
+          title: 'Kontak',
+          scrollController: scrollController,
         ),
-      ),
+        const SizedBox(height: AppSpacing.xl),
+        RevealOnScroll(
+          scrollController: scrollController,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(AppSpacing.xl),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: AppRadius.card,
+              border: Border.all(color: AppColors.borderChampagne),
+            ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final isCompact = constraints.maxWidth < 700;
+
+                final intro = Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: AppSpacing.editorialColumnWidth,
+                      ),
+                      child: Text(
+                        'Terbuka untuk diskusi riset, pengembangan sistem backend, '
+                        'atau kolaborasi proyek teknologi.',
+                        style: AppTypography.bodyLarge(),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    Text(
+                      'w.ajitomo@gmail.com',
+                      style: AppTypography.metaLabel(color: AppColors.champagne),
+                    ),
+                  ],
+                );
+
+                final actions = Wrap(
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.sm,
+                  children: [
+                    EditorialButton(
+                      label: 'Kirim Email',
+                      icon: Icons.mail_outline_rounded,
+                      isPrimary: true,
+                      onPressed: _openEmail,
+                    ),
+                    EditorialButton(
+                      label: 'GitHub',
+                      icon: Icons.code_rounded,
+                      onPressed: () =>
+                          _launchLink('https://github.com/retr0desk'),
+                    ),
+                    EditorialButton(
+                      label: 'LinkedIn',
+                      icon: Icons.north_east_rounded,
+                      onPressed: () => _launchLink(
+                        'https://www.linkedin.com/in/wahyu-ajitomo-03b368137',
+                      ),
+                    ),
+                    EditorialButton(
+                      label: 'Instagram',
+                      icon: Icons.north_east_rounded,
+                      onPressed: () =>
+                          _launchLink('https://instagram.com/_whyuaji'),
+                    ),
+                  ],
+                );
+
+                if (isCompact) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      intro,
+                      const SizedBox(height: AppSpacing.xl),
+                      actions,
+                    ],
+                  );
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    intro,
+                    const SizedBox(height: AppSpacing.xl),
+                    actions,
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

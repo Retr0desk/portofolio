@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:portofolio/components/AnimationSection.dart';
+import 'package:portofolio/utils/url_strategy.dart';
 import 'package:portofolio/components/about.dart';
 import 'package:portofolio/components/certificate.dart';
 import 'package:portofolio/components/contact.dart';
@@ -10,11 +8,14 @@ import 'package:portofolio/components/hero.dart';
 import 'package:portofolio/components/navbar.dart';
 import 'package:portofolio/components/projects.dart';
 import 'package:portofolio/components/skills.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:portofolio/theme/app_motion.dart';
+import 'package:portofolio/theme/app_spacing.dart';
+import 'package:portofolio/theme/app_theme.dart';
+import 'package:portofolio/widgets/motion/scroll_progress_bar.dart';
+import 'package:portofolio/widgets/motion/section_divider_line.dart';
 
 void main() {
-  setUrlStrategy(PathUrlStrategy());
+  configureUrlStrategy();
   runApp(const PortfolioApp());
 }
 
@@ -25,25 +26,10 @@ class PortfolioApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Portfolio Wahyu Ajitomo',
-
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF050507),
-        textTheme: GoogleFonts.poppinsTextTheme(
-          ThemeData.dark().textTheme,
-        ).apply(bodyColor: Colors.white, displayColor: Colors.white),
-      ),
-
-      builder: (context, child) => ResponsiveBreakpoints.builder(
-        child: child!,
-        breakpoints: [
-          Breakpoint(start: 0, end: 450, name: MOBILE),
-          Breakpoint(start: 451, end: 800, name: TABLET),
-          Breakpoint(start: 801, end: 1920, name: DESKTOP),
-        ],
-      ),
-
+      title: 'Wahyu Ajitomo — Portofolio',
+      theme: AppTheme.dark(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.dark,
       home: const PortfolioHome(),
     );
   }
@@ -57,49 +43,56 @@ class PortfolioHome extends StatefulWidget {
 }
 
 class _PortfolioHomeState extends State<PortfolioHome> {
-  final ScrollController smoothScroll = ScrollController();
-  Timer? _scrollTimer;
-  bool isScrolling = false;
+  final ScrollController _scrollController = ScrollController();
 
-  // Section keys
-  final aboutKey = GlobalKey();
-  final skillsKey = GlobalKey();
-  final projectsKey = GlobalKey();
-  final certificatesKey = GlobalKey();
-  final contactKey = GlobalKey();
+  final _aboutKey = GlobalKey();
+  final _skillsKey = GlobalKey();
+  final _projectsKey = GlobalKey();
+  final _certificatesKey = GlobalKey();
+  final _contactKey = GlobalKey();
 
   @override
-  void initState() {
-    super.initState();
-    smoothScroll.addListener(_onScroll);
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
-  void _onScroll() {
-    if (!isScrolling) {
-      setState(() => isScrolling = true);
+  Future<void> _scrollToTop() async {
+    final disableMotion = MediaQuery.disableAnimationsOf(context);
+    if (disableMotion) {
+      _scrollController.jumpTo(0);
+      return;
+    }
+    await _scrollController.animateTo(
+      0,
+      duration: AppMotion.scrollToDuration,
+      curve: AppMotion.scrollCurve,
+    );
+  }
+
+  Future<void> _scrollToKey(GlobalKey key) async {
+    final targetContext = key.currentContext;
+    if (targetContext == null) return;
+
+    final disableMotion = MediaQuery.disableAnimationsOf(context);
+    final box = targetContext.findRenderObject();
+    if (box is! RenderBox) return;
+
+    final pos = box.localToGlobal(Offset.zero).dy;
+    final targetOffset = (_scrollController.offset + pos - 96).clamp(
+      0.0,
+      _scrollController.position.maxScrollExtent,
+    );
+
+    if (disableMotion) {
+      _scrollController.jumpTo(targetOffset);
+      return;
     }
 
-    _scrollTimer?.cancel();
-    _scrollTimer = Timer(const Duration(milliseconds: 200), () {
-      if (mounted) {
-        setState(() => isScrolling = false);
-      }
-    });
-  }
-
-  Future<void> scrollToKey(GlobalKey key) async {
-    final context = key.currentContext;
-    if (context == null) return;
-
-    final box = context.findRenderObject() as RenderBox;
-    final pos = box.localToGlobal(Offset.zero, ancestor: null).dy;
-
-    final targetOffset = smoothScroll.offset + pos - 120;
-
-    await smoothScroll.animateTo(
+    await _scrollController.animateTo(
       targetOffset,
-      duration: const Duration(milliseconds: 900),
-      curve: Curves.easeInOutCubic,
+      duration: AppMotion.scrollToDuration,
+      curve: AppMotion.scrollCurve,
     );
   }
 
@@ -108,74 +101,108 @@ class _PortfolioHomeState extends State<PortfolioHome> {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/bg_glow_purple.png',
-              fit: BoxFit.cover,
-              color: Colors.black.withOpacity(0.4),
-              colorBlendMode: BlendMode.darken,
+          SingleChildScrollView(
+            controller: _scrollController,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final isCompact = constraints.maxWidth < 700;
+                final horizontalPadding = isCompact
+                    ? AppSpacing.lg
+                    : AppSpacing.xl;
+                final sectionGap = isCompact
+                    ? AppSpacing.sectionMobile
+                    : AppSpacing.sectionDesktop;
+
+                return Column(
+                  children: [
+                    const SizedBox(height: AppSpacing.xxxl),
+                    EditorialHero(
+                      scrollController: _scrollController,
+                      onViewProjects: () => _scrollToKey(_projectsKey),
+                    ),
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: AppSpacing.maxContentWidth,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: horizontalPadding,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SectionDividerLine(
+                                scrollController: _scrollController,
+                              ),
+                              SizedBox(height: sectionGap),
+                              KeyedSubtree(
+                                key: _aboutKey,
+                                child: AboutSection(
+                                  scrollController: _scrollController,
+                                ),
+                              ),
+                              SizedBox(height: sectionGap),
+                              KeyedSubtree(
+                                key: _skillsKey,
+                                child: SkillsSection(
+                                  scrollController: _scrollController,
+                                ),
+                              ),
+                              SizedBox(height: sectionGap),
+                              KeyedSubtree(
+                                key: _projectsKey,
+                                child: ProjectsSection(
+                                  scrollController: _scrollController,
+                                ),
+                              ),
+                              SizedBox(height: sectionGap),
+                              KeyedSubtree(
+                                key: _certificatesKey,
+                                child: CertificatesSection(
+                                  scrollController: _scrollController,
+                                ),
+                              ),
+                              SizedBox(height: sectionGap),
+                              KeyedSubtree(
+                                key: _contactKey,
+                                child: ContactSection(
+                                  scrollController: _scrollController,
+                                ),
+                              ),
+                              SizedBox(height: sectionGap),
+                              const Footer(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
-
-          SingleChildScrollView(
-            controller: smoothScroll,
-            child: Column(
-              children: [
-                const SizedBox(height: 40),
-
-                FancyNavBar(
-                  isScrolling: isScrolling,
-                  onAbout: () => scrollToKey(aboutKey),
-                  onSkills: () => scrollToKey(skillsKey),
-                  onProjects: () => scrollToKey(projectsKey),
-                  onCertficates: () => scrollToKey(certificatesKey),
-                  onContact: () => scrollToKey(contactKey),
-                ),
-
-                const SizedBox(height: 34),
-                FancyHero(isScrolling: isScrolling),
-                const SizedBox(height: 100),
-
-                AnimatedSection(
-                  child: Container(key: aboutKey, child: const AboutSection()),
-                ),
-                const SizedBox(height: 80),
-
-                AnimatedSection(
-                  child: Container(
-                    key: skillsKey,
-                    child: const SkillsSection(),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              bottom: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ScrollProgressBar(scrollController: _scrollController),
+                  AdaptiveNavBar(
+                    scrollController: _scrollController,
+                    onTop: _scrollToTop,
+                    onAbout: () => _scrollToKey(_aboutKey),
+                    onSkills: () => _scrollToKey(_skillsKey),
+                    onProjects: () => _scrollToKey(_projectsKey),
+                    onCertificates: () => _scrollToKey(_certificatesKey),
+                    onContact: () => _scrollToKey(_contactKey),
                   ),
-                ),
-                const SizedBox(height: 80),
-
-                AnimatedSection(
-                  child: Container(
-                    key: projectsKey,
-                    child: const ProjectsSection(),
-                  ),
-                ),
-                const SizedBox(height: 80),
-
-                AnimatedSection(
-                  child: Container(
-                    key: certificatesKey,
-                    child: const CertificatesSection(),
-                  ),
-                ),
-                const SizedBox(height: 80),
-
-                AnimatedSection(
-                  child: Container(
-                    key: contactKey,
-                    child: const ContactSection(),
-                  ),
-                ),
-                const SizedBox(height: 60),
-
-                const Footer(),
-                const SizedBox(height: 40),
-              ],
+                ],
+              ),
             ),
           ),
         ],

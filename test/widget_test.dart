@@ -1,27 +1,26 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-// Ensure that main.dart exports a class named MyApp or update the import/class name below to match your main widget.
+import 'package:portofolio/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('PortfolioApp renders editorial sections without errors', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(1440, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.pumpWidget(
+      const MediaQuery(
+        data: MediaQueryData(disableAnimations: true),
+        child: PortfolioApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Wahyu Ajitomo'), findsWidgets);
+    expect(find.text('Tentang'), findsWidgets);
+    expect(find.text('Proyek Pilihan'), findsOneWidget);
+    expect(find.text('Kontak'), findsWidgets);
   });
 }
