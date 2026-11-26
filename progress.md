@@ -31,3 +31,8 @@
   - `flutter analyze`: 0 issues found.
   - `flutter test`: All tests passed (1/1).
   - `flutter build web --release --base-href "/portofolio/"` dan deployment ke GitHub Pages (`gh-pages`).
+
+## 2026-11-26 — Pembaruan Profil & Keahlian
+- **Status:** Selesai
+- **File terkait:** `lib/components/skills.dart`, `lib/components/hero.dart`, `lib/components/about.dart`
+- **Ringkasan:** Menambahkan keahlian `JavaScript`, `Node.js`, `React`, `Next.js`, `Supabase` serta memperbarui peran saat ini sebagai Chief Technology Officer di PT. Andara Rejo Makmur (sejak November) dan basis di Yogyakarta, Indonesia.

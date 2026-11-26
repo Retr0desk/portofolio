@@ -38,16 +38,21 @@ class AboutSection extends StatelessWidget {
         final metaRows = RevealOnScroll(
           scrollController: scrollController,
           delay: const Duration(milliseconds: 100),
-          child: const Column(
+            child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _MetaItem(
-                label: 'Fokus Utama',
-                value: 'Deep Learning, Computer Vision, Sistem Aman',
+                label: 'Peran Saat Ini',
+                value:
+                    'Chief Technology Officer — PT. Andara Rejo Makmur (sejak November)',
               ),
               _MetaItem(
-                label: 'Pendekatan',
-                value: 'Terstruktur, dapat diaudit, dan siap produksi',
+                label: 'Fokus Utama',
+                value: 'Deep Learning, Computer Vision, Arsitektur Full-Stack & Sistem Aman',
+              ),
+              _MetaItem(
+                label: 'Lokasi',
+                value: 'Yogyakarta, Indonesia',
               ),
               _MetaItem(
                 label: 'Kolaborasi',

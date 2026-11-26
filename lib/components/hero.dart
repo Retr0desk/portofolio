@@ -46,7 +46,7 @@ class EditorialHero extends StatelessWidget {
                 const SizedBox(width: AppSpacing.sm),
                 Flexible(
                   child: Text(
-                    'AI Engineer · Pengembang Sistem Aman',
+                    'Chief Technology Officer · PT. Andara Rejo Makmur',
                     style: AppTypography.metaLabel(color: AppColors.champagne),
                   ),
                 ),

@@ -20,11 +20,25 @@ class SkillsSection extends StatelessWidget {
     ),
     _SkillGroup(
       category: 'Backend & Infrastruktur',
-      items: ['Docker', 'REST API', 'Laravel', 'PostgreSQL'],
+      items: [
+        'Node.js',
+        'Supabase',
+        'Docker',
+        'REST API',
+        'Laravel',
+        'PostgreSQL',
+      ],
     ),
     _SkillGroup(
       category: 'Aplikasi & Antarmuka',
-      items: ['Flutter', 'Dart', 'UI/UX Design'],
+      items: [
+        'JavaScript',
+        'React',
+        'Next.js',
+        'Flutter',
+        'Dart',
+        'UI/UX Design',
+      ],
     ),
   ];
 
